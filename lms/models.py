@@ -40,13 +40,13 @@ class Lesson(models.Model):
         blank=True,
         null=True,
     )
-    # video_url = models.URLField(
-    #     max_length=200,
-    #     verbose_name="Ссылка на видео",
-    #     help_text="Скопируйте ссылку на видео",
-    #     blank=True,
-    #     null=True,
-    # )
+    video_url = models.URLField(
+        max_length=200,
+        verbose_name="Ссылка на видео",
+        help_text="Скопируйте ссылку на видео",
+        blank=True,
+        null=True,
+    )
     course = models.ForeignKey(
         "Course",
         on_delete=models.SET_NULL,
