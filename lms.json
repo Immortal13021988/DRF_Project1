@@ -1,0 +1,33 @@
+[
+{
+    "model": "lms.course",
+    "pk": 1,
+    "fields": {
+        "title": "Введение в программирование",
+        "preview": "",
+        "description": null
+    }
+},
+{
+    "model": "lms.lesson",
+    "pk": 1,
+    "fields": {
+        "title": "Введение",
+        "description": null,
+        "preview": "",
+        "video_url": null,
+        "course": null
+    }
+},
+{
+    "model": "lms.lesson",
+    "pk": 2,
+    "fields": {
+        "title": "Погружение",
+        "description": null,
+        "preview": "",
+        "video_url": null,
+        "course": 1
+    }
+}
+]
