@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "users",
     "lms",
+    "django_filters",
 ]
 
 MIDDLEWARE = [
@@ -52,6 +53,10 @@ TEMPLATES = [
         },
     },
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
 
 WSGI_APPLICATION = "config.wsgi.application"
 
