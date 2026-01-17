@@ -1,8 +1,8 @@
 from django.urls import path
+from rest_framework.routers import SimpleRouter
 
 from .apps import UsersConfig
 from .views import PaymentsViewSet
-from rest_framework.routers import SimpleRouter
 
 app_name = UsersConfig.name
 

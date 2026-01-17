@@ -4,7 +4,8 @@ from rest_framework.generics import (CreateAPIView, DestroyAPIView,
 from rest_framework.viewsets import ModelViewSet
 
 from .models import Course, Lesson
-from .serializers import CourseSerializer, LessonSerializer, CourseDetailSerializer
+from .serializers import (CourseDetailSerializer, CourseSerializer,
+                          LessonSerializer)
 
 
 class CourseViewSet(ModelViewSet):
