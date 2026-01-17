@@ -175,3 +175,5 @@ cython_debug/
 .pypirc
 
 students/
+
+users.txt
