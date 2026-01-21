@@ -1,11 +1,12 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from lms.models import Lesson, Course
+from lms.models import Course, Lesson
 
 
 class User(AbstractUser):
     """Модель пользователя"""
+
     username = None
     email = models.EmailField(unique=True, verbose_name="Email")
     phone_number = models.CharField(
@@ -43,8 +44,13 @@ class User(AbstractUser):
 
 class Payments(models.Model):
     """Модель платежи"""
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь",
-                             help_text="Выберете пользователя", )
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name="Пользователь",
+        help_text="Выберете пользователя",
+    )
     date_payment = models.DateTimeField(
         auto_now=True,
         verbose_name="Дата платежа",
@@ -71,13 +77,12 @@ class Payments(models.Model):
     )
     method_payment = models.CharField(
         max_length=20,
-        choices=[('cash', 'Наличные'), ('transfer', 'Перевод на счет')],
+        choices=[("cash", "Наличные"), ("transfer", "Перевод на счет")],
         verbose_name="Способ оплаты",
         help_text="Выберите способ оплаты",
-
     )
 
     class Meta:
         verbose_name = "Платеж"
         verbose_name_plural = "Платежи"
-        unique_together = ['user', 'course_paid', 'lesson_paid']
+        unique_together = ["user", "course_paid", "lesson_paid"]

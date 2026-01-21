@@ -5,7 +5,8 @@
     "fields": {
         "title": "Введение в программирование",
         "preview": "",
-        "description": null
+        "description": null,
+        "owner": null
     }
 },
 {
@@ -14,7 +15,8 @@
     "fields": {
         "title": "Погружение в Python",
         "preview": "",
-        "description": null
+        "description": null,
+        "owner": null
     }
 },
 {
@@ -25,7 +27,8 @@
         "description": null,
         "preview": "",
         "video_url": null,
-        "course": 1
+        "course": 1,
+        "owner": null
     }
 },
 {
@@ -36,7 +39,8 @@
         "description": null,
         "preview": "",
         "video_url": null,
-        "course": 1
+        "course": 1,
+        "owner": null
     }
 },
 {
@@ -47,7 +51,20 @@
         "description": null,
         "preview": "",
         "video_url": null,
-        "course": 1
+        "course": 1,
+        "owner": null
+    }
+},
+{
+    "model": "lms.lesson",
+    "pk": 4,
+    "fields": {
+        "title": "Продвинутый урок по Python",
+        "description": null,
+        "preview": "",
+        "video_url": null,
+        "course": null,
+        "owner": 2
     }
 }
 ]
