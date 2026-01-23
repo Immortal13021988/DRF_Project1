@@ -1,6 +1,7 @@
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 
 from .models import Course, Lesson
+from .validators import ValidateInvitedUrl
 
 
 class CourseSerializer(ModelSerializer):
@@ -17,6 +18,7 @@ class LessonSerializer(ModelSerializer):
     class Meta:
         model = Lesson
         fields = "__all__"
+        validators = [ValidateInvitedUrl(field='video_url')]
 
 
 class CourseDetailSerializer(ModelSerializer):
@@ -25,6 +27,7 @@ class CourseDetailSerializer(ModelSerializer):
     lessons = LessonSerializer(many=True, read_only=True)
     lesson_count = SerializerMethodField()
 
+    @staticmethod
     def get_lesson_count(self, course):
         return course.lessons.count()
 
