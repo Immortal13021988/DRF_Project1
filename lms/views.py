@@ -7,6 +7,7 @@ from rest_framework.viewsets import ModelViewSet
 from users.permissions import IsModer, IsOwner
 
 from .models import Course, Lesson
+from .paginators import PageNumbersPagination
 from .serializers import (CourseDetailSerializer, CourseSerializer,
                           LessonSerializer)
 
@@ -15,6 +16,7 @@ class CourseViewSet(ModelViewSet):
     """Класс для выполнения всех CRUD операций с курсами."""
 
     queryset = Course.objects.all()
+    pagination_class = PageNumbersPagination
 
     def get_serializer_class(self):
         if self.action == "retrieve":
@@ -94,3 +96,4 @@ class LessonListApiView(ListAPIView):
 
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
+    pagination_class = PageNumbersPagination
