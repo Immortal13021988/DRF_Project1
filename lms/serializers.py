@@ -28,7 +28,6 @@ class CourseDetailSerializer(serializers.ModelSerializer):
     lessons = LessonSerializer(many=True, read_only=True)
     lesson_count = serializers.SerializerMethodField()
 
-    @staticmethod
     def get_lesson_count(self, course):
         return course.lessons.count()
 
@@ -47,7 +46,6 @@ class SubscriptionSerializer(serializers.ModelSerializer):
         fields = ['user_sub', 'course_sub', 'is_sub']
 
     def get_is_subscribed(self, obj):
-        print("1")
         user = self.context['request'].user
         course = obj.course_subscription
 
