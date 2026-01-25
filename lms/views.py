@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 from users.permissions import IsModer, IsOwner
+
 from .models import Course, Lesson, Subscription
 from .paginators import PageNumbersPagination
 from .serializers import (CourseDetailSerializer, CourseSerializer,
@@ -119,8 +120,7 @@ class SubscriptionAPIView(APIView):
         course_id = self.request.data.get("course_id")
         if not course_id:
             return Response(
-                {"error": "course_id обязателен"},
-                status=status.HTTP_400_BAD_REQUEST
+                {"error": "course_id обязателен"}, status=status.HTTP_400_BAD_REQUEST
             )
         course_item = get_object_or_404(Course, pk=course_id)
         subs_item = Subscription.objects.filter(user_sub=user, course_sub=course_item)
@@ -129,11 +129,11 @@ class SubscriptionAPIView(APIView):
         if subs_item.exists():
 
             subs_item.delete()
-            message = 'Подписка удалена'
+            message = "Подписка удалена"
         # Если подписки у пользователя на этот курс нет - создаем ее
         else:
             Subscription.objects.create(user_sub=user, course_sub=course_item)
 
-            message = 'Подписка добавлена'
+            message = "Подписка добавлена"
         # Возвращаем ответ в API
         return Response({"message": message})

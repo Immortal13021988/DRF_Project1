@@ -88,16 +88,11 @@ class Lesson(models.Model):
 class Subscription(models.Model):
 
     user_sub = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        verbose_name="Пользователь"
-
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Пользователь"
     )
 
     course_sub = models.ForeignKey(
-        Course,
-        on_delete=models.CASCADE,
-        verbose_name="Курс"
+        Course, on_delete=models.CASCADE, verbose_name="Курс"
     )
 
     def __str__(self):
@@ -107,5 +102,3 @@ class Subscription(models.Model):
         verbose_name = "Подписка"
         verbose_name_plural = "Подписки"
         ordering = ["user_sub", "course_sub"]
-
-

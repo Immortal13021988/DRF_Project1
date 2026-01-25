@@ -1,6 +1,5 @@
 from rest_framework import serializers
 
-
 from .models import Course, Lesson, Subscription
 from .validators import ValidateInvitedUrl
 
@@ -19,7 +18,7 @@ class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
         fields = "__all__"
-        validators = [ValidateInvitedUrl(field='video_url')]
+        validators = [ValidateInvitedUrl(field="video_url")]
 
 
 class CourseDetailSerializer(serializers.ModelSerializer):
@@ -43,10 +42,10 @@ class SubscriptionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Subscription
-        fields = ['user_sub', 'course_sub', 'is_sub']
+        fields = ["user_sub", "course_sub", "is_sub"]
 
     def get_is_subscribed(self, obj):
-        user = self.context['request'].user
+        user = self.context["request"].user
         course = obj.course_subscription
 
         return Subscription.objects.filter(user_sub=user, course_sub=course).exists()
