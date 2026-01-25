@@ -1,10 +1,11 @@
-from rest_framework.serializers import ModelSerializer, SerializerMethodField
+from rest_framework import serializers
 
-from .models import Course, Lesson
+
+from .models import Course, Lesson, Subscription
 from .validators import ValidateInvitedUrl
 
 
-class CourseSerializer(ModelSerializer):
+class CourseSerializer(serializers.ModelSerializer):
     """Сериализатор по курсам"""
 
     class Meta:
@@ -12,7 +13,7 @@ class CourseSerializer(ModelSerializer):
         fields = "__all__"
 
 
-class LessonSerializer(ModelSerializer):
+class LessonSerializer(serializers.ModelSerializer):
     """Сериализатор по курсам"""
 
     class Meta:
@@ -21,11 +22,11 @@ class LessonSerializer(ModelSerializer):
         validators = [ValidateInvitedUrl(field='video_url')]
 
 
-class CourseDetailSerializer(ModelSerializer):
+class CourseDetailSerializer(serializers.ModelSerializer):
     """Сериализатор по курсам с добавлением поля всех уроков и с количеством уроков"""
 
     lessons = LessonSerializer(many=True, read_only=True)
-    lesson_count = SerializerMethodField()
+    lesson_count = serializers.SerializerMethodField()
 
     @staticmethod
     def get_lesson_count(self, course):
@@ -34,3 +35,20 @@ class CourseDetailSerializer(ModelSerializer):
     class Meta:
         model = Course
         fields = ["title", "description", "preview", "lessons", "lesson_count"]
+
+
+class SubscriptionSerializer(serializers.ModelSerializer):
+    """Сериализатор подписки"""
+
+    is_subscribed = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Subscription
+        fields = ['user_sub', 'course_sub', 'is_sub']
+
+    def get_is_subscribed(self, obj):
+        print("1")
+        user = self.context['request'].user
+        course = obj.course_subscription
+
+        return Subscription.objects.filter(user_sub=user, course_sub=course).exists()
