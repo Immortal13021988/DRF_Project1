@@ -12,7 +12,7 @@ from users.permissions import IsModer, IsOwner
 from .models import Course, Lesson, Subscription
 from .paginators import PageNumbersPagination
 from .serializers import (CourseDetailSerializer, CourseSerializer,
-                          LessonSerializer, SubscriptionSerializer)
+                          LessonSerializer)
 
 
 class CourseViewSet(ModelViewSet):
@@ -112,8 +112,6 @@ class LessonListApiView(ListAPIView):
 
 class SubscriptionAPIView(APIView):
     """Контроллер по установки подписки пользователя и на удаление подписки у пользователя."""
-
-    serializer_class = SubscriptionSerializer
 
     def post(self, request, *args, **kwargs):
         user = self.request.user

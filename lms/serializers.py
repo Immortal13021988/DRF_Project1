@@ -12,6 +12,22 @@ class CourseSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+# class SubscriptionSerializer(serializers.ModelSerializer):
+#     """Сериализатор подписки"""
+#
+#     is_sub = serializers.SerializerMethodField()
+#
+#     class Meta:
+#         model = Subscription
+#         fields = ["user_sub", "course_sub", "is_sub"]
+#
+#     def get_is_sub(self, obj):
+#         user = self.context["request"].user
+#         course = obj.course_sub
+#
+#         return Subscription.objects.filter(user_sub=user, course_sub=course).exists()
+
+
 class LessonSerializer(serializers.ModelSerializer):
     """Сериализатор по курсам"""
 
@@ -26,26 +42,17 @@ class CourseDetailSerializer(serializers.ModelSerializer):
 
     lessons = LessonSerializer(many=True, read_only=True)
     lesson_count = serializers.SerializerMethodField()
+    is_sub = serializers.SerializerMethodField()
 
     def get_lesson_count(self, course):
         return course.lessons.count()
 
-    class Meta:
-        model = Course
-        fields = ["title", "description", "preview", "lessons", "lesson_count"]
-
-
-class SubscriptionSerializer(serializers.ModelSerializer):
-    """Сериализатор подписки"""
-
-    is_subscribed = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Subscription
-        fields = ["user_sub", "course_sub", "is_sub"]
-
-    def get_is_subscribed(self, obj):
+    def get_is_sub(self, course):
         user = self.context["request"].user
-        course = obj.course_subscription
+        course = course.id
 
         return Subscription.objects.filter(user_sub=user, course_sub=course).exists()
+
+    class Meta:
+        model = Course
+        fields = ["title", "description", "preview", "lessons", "lesson_count", "is_sub"]
