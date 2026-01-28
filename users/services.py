@@ -7,9 +7,7 @@ stripe.api_key = STRIPE_API_KEY
 
 def create_stripe_product(product):
     """Создаёт продукт в Stripe."""
-    stripe_product = stripe.Product.create(
-        name=product.name, description=product.description
-    )
+    stripe_product = stripe.Product.create(name=product.title)
     return stripe_product
 
 
@@ -29,3 +27,12 @@ def create_stripe_session(price):
         mode="payment",
     )
     return session.get("id"), session.get("url")
+
+
+def retrieve_stripe_session(session_id):
+    try:
+        session = stripe.checkout.Session.retrieve(session_id)
+        return session
+    except stripe.error.StripeError as e:
+        print(f"Ошибка: {e}")
+        return None
