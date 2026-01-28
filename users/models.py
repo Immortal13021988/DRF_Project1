@@ -81,8 +81,25 @@ class Payments(models.Model):
         verbose_name="Способ оплаты",
         help_text="Выберите способ оплаты",
     )
+    session_id = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        verbose_name="Id сесии",
+        help_text="Укажите Id сесии",
+    )
+    link = models.URLField(
+        max_length=400,
+        null=True,
+        blank=True,
+        verbose_name="Ссылка на оплату",
+        help_text="Укажите ссылку на оплату",
+    )
 
     class Meta:
         verbose_name = "Платеж"
         verbose_name_plural = "Платежи"
-        unique_together = ["user", "course_paid", "lesson_paid"]
+        ordering = ["-date_payment"]  # новые платежи первыми
+
+    def __str__(self):
+        return self.amount
