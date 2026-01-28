@@ -12,7 +12,7 @@ app_name = UsersConfig.name
 
 router = SimpleRouter()
 
-router.register("", PaymentsViewSet)
+router.register("payments", PaymentsViewSet)
 
 urlpatterns = [
     path("register/", UserCreateAPIView.as_view(), name="register"),
@@ -30,6 +30,9 @@ urlpatterns = [
         TokenRefreshView.as_view(permission_classes=(AllowAny,)),
         name="token_refresh",
     ),
+    # path(
+    #     "pay/", PaymentsCreateAPIView.as_view(), name="pay"
+    # )  #  Вариант с PaymentsCreateAPIView не забыть добавить в импорт
 ]
 
 urlpatterns += router.urls
