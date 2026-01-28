@@ -50,6 +50,8 @@ class Payments(models.Model):
         on_delete=models.CASCADE,
         verbose_name="Пользователь",
         help_text="Выберете пользователя",
+        null=True,
+        blank=True,
     )
     date_payment = models.DateTimeField(
         auto_now=True,
@@ -69,15 +71,15 @@ class Payments(models.Model):
         null=True,
         blank=True,
     )
-    amount = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
+    amount = models.PositiveIntegerField(
         verbose_name="Сумма оплаты",
         help_text="Укажите сумму оплаты",
     )
     method_payment = models.CharField(
         max_length=20,
         choices=[("cash", "Наличные"), ("transfer", "Перевод на счет")],
+        null=True,
+        blank=True,
         verbose_name="Способ оплаты",
         help_text="Выберите способ оплаты",
     )
@@ -89,7 +91,7 @@ class Payments(models.Model):
         help_text="Укажите Id сесии",
     )
     link = models.URLField(
-        max_length=400,
+        max_length=500,
         null=True,
         blank=True,
         verbose_name="Ссылка на оплату",
@@ -102,4 +104,4 @@ class Payments(models.Model):
         ordering = ["-date_payment"]  # новые платежи первыми
 
     def __str__(self):
-        return self.amount
+        return f"Платеж {self.user} - {self.amount} руб."
