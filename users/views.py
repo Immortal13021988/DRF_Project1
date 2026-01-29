@@ -10,6 +10,8 @@ from rest_framework.viewsets import ModelViewSet
 from .models import Payments, User
 from .permissions import IsModer, IsOwner
 from .serializers import PaymentsSerializer, UserSerializer
+from .services import (create_stripe_price, create_stripe_product,
+                       create_stripe_session)
 
 
 class UserCreateAPIView(CreateAPIView):
@@ -74,3 +76,40 @@ class PaymentsViewSet(ModelViewSet):
     )
     ordering_fields = ("date_payment",)
     # search_fields Для поиска
+
+    def perform_create(self, serializer):
+        payment = serializer.save(user=self.request.user)
+        product = create_stripe_product(product=payment.course_paid)
+        price = create_stripe_price(product, payment.amount)
+        session_id, session_link = create_stripe_session(price)
+        payment.session_id = session_id
+        payment.link = session_link
+        payment.method_payment = "transfer"
+        payment.save()
+
+
+# class PaymentsCreateAPIView(CreateAPIView):  # Вариант с PaymentsCreateAPIView не забыть добавить в импорт
+#     queryset = Payments.objects.all()
+#     serializer_class = PaymentsSerializer
+#
+#     filter_backends = [
+#         DjangoFilterBackend,
+#         filters.OrderingFilter,
+#     ]  # Фильтр для поиска filters.SearchFilter
+#     filterset_fields = (
+#         "method_payment",
+#         "lesson_paid",
+#         "course_paid",
+#     )
+#     ordering_fields = ("date_payment",)
+#     # search_fields Для поиска
+#
+#     def perform_create(self, serializer):
+#         payment = serializer.save(user=self.request.user)
+#         product = create_stripe_product(product=payment.course_paid)
+#         price = create_stripe_price(product, payment.amount)
+#         session_id, session_link = create_stripe_session(price)
+#         payment.session_id = session_id
+#         payment.link = session_link
+#         payment.method_payment = "transfer"
+#         payment.save()

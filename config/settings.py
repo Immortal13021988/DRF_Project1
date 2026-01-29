@@ -23,10 +23,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "users",
-    "lms",
+    "drf_spectacular",
     "django_filters",
     "rest_framework_simplejwt",
+    "users",
+    "lms",
 ]
 
 MIDDLEWARE = [
@@ -66,6 +67,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 WSGI_APPLICATION = "config.wsgi.application"
@@ -124,3 +126,13 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Your Project API",
+    "DESCRIPTION": "Your project description",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    # OTHER SETTINGS
+}
+
+STRIPE_API_KEY = os.getenv("STRIPE_API_KEY")

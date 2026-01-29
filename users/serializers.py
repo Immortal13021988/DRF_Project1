@@ -1,9 +1,10 @@
-from rest_framework.serializers import ModelSerializer, SerializerMethodField
+from rest_framework import serializers
 
 from .models import Payments, User
+from .services import retrieve_stripe_session
 
 
-class UserSerializer(ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     """Сериализатор пользователя"""
 
     class Meta:
@@ -11,9 +12,29 @@ class UserSerializer(ModelSerializer):
         fields = "__all__"
 
 
-class PaymentsSerializer(ModelSerializer):
+class PaymentsSerializer(serializers.ModelSerializer):
     """Сериализатор по платежам"""
+
+    is_payments = serializers.SerializerMethodField()
+
+    def get_is_payments(self, payment):  # Получения статуса платежа
+        session_data = retrieve_stripe_session(payment.session_id)
+        if session_data:
+            print(session_data)  # Проверочный принт
+            return session_data["payment_status"]
+        else:
+            return None
 
     class Meta:
         model = Payments
-        fields = "__all__"
+        fields = [
+            "id",
+            "date_payment",
+            "amount",
+            "method_payment",
+            "session_id",
+            "link",
+            "user",
+            "course_paid",
+            "is_payments",
+        ]
