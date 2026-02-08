@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
+from lms.tasks import send_email_about_update_course
 from users.permissions import IsModer, IsOwner
 
 from .models import Course, Lesson, Subscription
@@ -39,6 +40,18 @@ class CourseViewSet(ModelViewSet):
         course = serializer.save()
         course.owner = self.request.user
         course.save()
+
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        course = serializer.instance
+        # Получаем всех подписчиков курса
+        subscribers = Subscription.objects.filter(course_sub=course)
+        # Отправляем письма всем подписчикам
+        for subscription in subscribers:
+            print(subscription.user_sub.email)  # Проверочный принт
+            send_email_about_update_course.delay(
+                subscription.user_sub.email, course.title
+            )
 
     def get_permissions(self):
         """Определяем permissions в зависимости от действия."""
@@ -132,6 +145,6 @@ class SubscriptionAPIView(APIView):
         else:
             Subscription.objects.create(user_sub=user, course_sub=course_item)
 
-            message = "Подписка добавлена"
+            message = f"Подписка добавлена у {user}"
         # Возвращаем ответ в API
         return Response({"message": message})
